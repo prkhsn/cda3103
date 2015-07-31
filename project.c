@@ -68,25 +68,21 @@ int instruction_decode(unsigned op,struct_controls *controls)
                 controls->RegWrite = 1; // enabled
                 break;
                 
-                
         case 8: // addi
                 controls->ALUSrc = 1; // multiplexer path 1
                 controls->RegWrite = 1; // enabled
                 break;
-                
                 
         case 4: // beq
                 controls->Branch = 1; 
                 controls->ALUOp = 1; // subtraction
                 break;
                 
-                
         case 15: // lui
                 controls->ALUOp = 6; // shift left_extended value by 16
                 controls->ALUSrc = 1; // multiplexer path 1
                 controls->RegWrite = 1; // enabled
                 break;
-                
                 
         case 35: // lw
                 controls->MemRead = 1; // enabled
@@ -95,20 +91,17 @@ int instruction_decode(unsigned op,struct_controls *controls)
                 controls->RegWrite = 1; // enabled
                 break;
                 
-                
         case 10: // slti
                 controls->ALUOp = 2; // set less than
                 controls->ALUSrc = 1; // multiplexer path 1
                 controls->RegWrite = 1;
                 break;
                 
-        
         case 11: // sltiu
                 controls->ALUOp = 3; // set less than unsigned
                 controls->ALUSrc = 1; // multiplexer path 1
                 controls->RegWrite = 1; // enabled
                 break;
-                
                 
         case 43: // sw
                 controls->RegDst = 2; // don’t care
@@ -117,14 +110,13 @@ int instruction_decode(unsigned op,struct_controls *controls)
                 controls->ALUSrc = 1; // multiplexer path 1
                 break;
                 
-                
         case 2: // j
                 controls->Jump = 1;
                 break;
                 
                 default: return 1; // If a halt condition occurs
     } 
-                return 0; // If no halt condition occurs
+    return 0; // If no halt condition occurs
 }
 
 
