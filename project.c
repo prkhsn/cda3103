@@ -54,69 +54,69 @@ int instruction_decode(unsigned op,struct_controls *controls)
 	controls->Jump=0;
 	controls->Branch=0;
 	controls->MemRead=0;
-    controls->MemtoReg=0;
-    controls->ALUOp=0;
-    controls->MemWrite=0;
-    controls->ALUSrc=0;
-    controls->RegWrite=0;
-    
-    switch (op) 
-    {
-    	case 0: // add, and, or, slt, sltu, sub
-    			controls->RegDst = 1; // multiplexer path 1
-                controls->ALUOp = 7; // R-type instruction
-                controls->RegWrite = 1; // enabled
-                break;
+	controls->MemtoReg=0;
+	controls->ALUOp=0;
+	controls->MemWrite=0;
+	controls->ALUSrc=0;
+	controls->RegWrite=0;
+	
+	switch (op) 
+	{
+		case 0: // add, and, or, slt, sltu, sub
+			controls->RegDst = 1; // multiplexer path 1
+			controls->ALUOp = 7; // R-type instruction
+			controls->RegWrite = 1; // enabled
+			break;
                 
-        case 8: // addi
-                controls->ALUSrc = 1; // multiplexer path 1
-                controls->RegWrite = 1; // enabled
-                break;
+                case 8: // addi
+                	controls->ALUSrc = 1; // multiplexer path 1
+                	controls->RegWrite = 1; // enabled
+                	break;
                 
-        case 4: // beq
-                controls->Branch = 1; 
-                controls->ALUOp = 1; // subtraction
-                break;
+        	case 4: // beq
+                	controls->Branch = 1; 
+                	controls->ALUOp = 1; // subtraction
+                	break;
                 
-        case 15: // lui
-                controls->ALUOp = 6; // shift left_extended value by 16
-                controls->ALUSrc = 1; // multiplexer path 1
-                controls->RegWrite = 1; // enabled
-                break;
+        	case 15: // lui
+                	controls->ALUOp = 6; // shift left_extended value by 16
+                	controls->ALUSrc = 1; // multiplexer path 1
+                	controls->RegWrite = 1; // enabled
+                	break;
                 
-        case 35: // lw
-                controls->MemRead = 1; // enabled
-                controls->MemtoReg = 1; // multiplexer path 1
-                controls->ALUSrc = 1; // multiplexer path 1
-                controls->RegWrite = 1; // enabled
-                break;
+	        case 35: // lw
+	                controls->MemRead = 1; // enabled
+	                controls->MemtoReg = 1; // multiplexer path 1
+	                controls->ALUSrc = 1; // multiplexer path 1
+	                controls->RegWrite = 1; // enabled
+	                break;
                 
-        case 10: // slti
-                controls->ALUOp = 2; // set less than
-                controls->ALUSrc = 1; // multiplexer path 1
-                controls->RegWrite = 1;
-                break;
-                
-        case 11: // sltiu
-                controls->ALUOp = 3; // set less than unsigned
-                controls->ALUSrc = 1; // multiplexer path 1
-                controls->RegWrite = 1; // enabled
-                break;
-                
-        case 43: // sw
-                controls->RegDst = 2; // don’t care
-                controls->MemtoReg = 2; // don’t care
-                controls->MemWrite = 1; // enabled
-                controls->ALUSrc = 1; // multiplexer path 1
-                break;
-                
-        case 2: // j
-                controls->Jump = 1;
-                break;
-                
-                default: return 1; // If a halt condition occurs
-    } 
-    return 0; // If no halt condition occurs
+	        case 10: // slti
+	                controls->ALUOp = 2; // set less than
+	                controls->ALUSrc = 1; // multiplexer path 1
+	                controls->RegWrite = 1;
+	                break;
+	                
+	        case 11: // sltiu
+	                controls->ALUOp = 3; // set less than unsigned
+	                controls->ALUSrc = 1; // multiplexer path 1
+	                controls->RegWrite = 1; // enabled
+	                break;
+	                
+	        case 43: // sw
+	                controls->RegDst = 2; // don’t care
+	                controls->MemtoReg = 2; // don’t care
+	                controls->MemWrite = 1; // enabled
+	                controls->ALUSrc = 1; // multiplexer path 1
+	                break;
+	                
+	        case 2: // j
+	                controls->Jump = 1;
+	                break;
+	                
+	                default: return 1; // If a halt condition occurs
+	    } 
+	    return 0; // If no halt condition occurs
 }
 
 
