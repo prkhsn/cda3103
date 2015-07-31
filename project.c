@@ -10,6 +10,51 @@
 4.  The following table shows the operations of the ALU.  */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
+	 switch (ALUControl)
+            {
+                case 0: 
+                    *ALUresult = A + B; // add
+                    break;
+                    
+                case 1: 
+                    *ALUresult = A - B; // sub
+                    break;
+                    
+                case 2: 
+                    if ( (signed)A < (signed)B) // slt
+                        *ALUresult = 1;
+                    else
+                        *ALUresult = 0;
+                    break;
+                    
+                case 3: 
+                    if (A < B) // sltu
+                        *ALUresult = 1;
+                    else
+                        *ALUresult = 0;
+                    break;
+                    
+                case 4:
+                    *ALUresult = A & B; // and
+                    break;
+                    
+                case 5: 
+                    *ALUresult = A | B; // or
+                    break;
+                    
+                case 6: 
+                    *ALUresult = B << 16; // shift left B by 16 bits
+                    break;
+                    
+                case 7: 
+                    *ALUresult = !A; // not A
+                    }
+            
+            // Assign Zero to 1 if the result is zero
+            if (*ALUresult == 0)
+                *Zero = 1;
+            else
+                *Zero = 0;
 
 }
 
