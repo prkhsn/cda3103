@@ -65,7 +65,17 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 2. Return 1 if a halt condition occurs; otherwise, return 0. */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-	return 0;
+	// If not word aligned, halt
+	if (PC % 4 != 0) 
+	{
+		return 1;
+        }
+            else
+            {
+            	// Fetch instruction addressed by PC from Mem and write to instruction
+            	*instruction = Mem[PC >> 2];
+            	return 0;
+            }
 }
 
 
