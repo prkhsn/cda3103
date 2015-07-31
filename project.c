@@ -165,8 +165,27 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 4.  Return 1 if a halt condition occurs; otherwise, return 0.  */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-	return 0;
-
+	// If MemRead or MemWrite is asserted and word not aligned or out of bounds, halt
+	if ((MemRead | MemWrite) && (ALUresult % 4 != 0 | (ALUresult >> 2) > 0xFFFF))  
+	{
+		// Return 1 if a halt condition occurs
+		return 1;
+        }
+        
+        if (MemRead)
+        {
+        	// Read the content of the memory location addressed by ALUresult to memdata
+        	*memdata = Mem[ALUresult >> 2];
+        }
+        
+            if (MemWrite)
+            {
+            	// Write the value of data2 to the memory location addressed by ALUresult
+                Mem[ALUresult >> 2] = data2;
+            }
+            
+            // Return 0 if no halt condition occurs
+            return 0;
 }
 
 
