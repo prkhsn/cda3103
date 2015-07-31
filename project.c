@@ -207,8 +207,59 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 5.  Return 1 if a halt condition occurs; otherwise, return 0.  */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
+	char ALUControl = ALUOp;
+	
+	if (ALUSrc)
+	{
+		// for I-types
+		data2 = extended_value;
+	}
+	
+	switch (ALUOp) 
+	{
+		// I-types
+		case 0: case 1: case 2: case 3: case 6:
+			ALU(data1,data2,ALUOp,ALUresult,Zero);
+			break;
+		
+		case 7: // R-types
+			switch (funct) 
+			{
+				case 0x20: // add
+                                	ALUControl = 0;
+                                	break;
+                                
+                                case 0x22: // sub
+                                	ALUControl = 1;
+                                	break;
+                                
+                            	case 0x2A: // slt
+                                 	ALUControl = 2;
+                                 	break;
+                                
+                            	case 0x2B: // sltu
+                                 	ALUControl = 3;
+                                 	break;
+                                
+                            	case 0x24: // and
+                                	ALUControl = 4;
+                                	break;
+                                
+                            	case 0x25: // or
+                        		ALUControl = 5;
+                                	break;
+                                
+                                	default:
+                                	return 1;
+                                	break;
+				
+			}
+	}
+	
+	ALU(data1, data2, ALUControl, ALUresult, Zero);
+	
+	// No halt condition encountered
 	return 0;
-
 }
 
 /* Read / Write Memory */
