@@ -86,6 +86,14 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 2.  Read line 41 to 47 of spimcore.c for more information. */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
+	instruction = 
+	*op = 
+	*r1 = 
+	*r2 = 
+	*r3 = 
+	*funct = 
+	*offset =
+	*jsec =
 
 }
 
@@ -194,7 +202,12 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 1.  Assign the sign-extended value of offset to extended_value. */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
-
+	if (offset >> 15)
+        	// If offset is negative then it must be extended with 1's
+        	*extended_value = offset | 0xFFFF0000;
+    	else
+        	// If offset is positive then it must be extended with 0's
+        	*extended_value = offset & 0x0000FFFF;
 }
 
 /* ALU operations */
@@ -250,7 +263,22 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 1.  Write the data (ALUresult or memdata) to a register (Reg) addressed by r2 or r3. */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
-
+	// Assign the destination register the appropriate register
+     	unsigned r;
+     	if (RegDst)
+     		r = r3;
+     	else 
+     		r = r2;
+      
+     	// If RegWrite = 1 then write to register.
+	// If MemtoReg = 1 then assign memdata to destination register. Otherwise assign ALUresult to destination register.
+     	if (RegWrite == 1)
+     	{
+     		if (MemtoReg == 1)
+     			Reg[r] = memdata;
+     		else
+     			Reg[r] = ALUresult;	
+     	}
 }
 
 /* PC update */
@@ -259,5 +287,11 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 1.  Update the program counter (PC).  */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
-
+	*PC += 4;
+     
+    	if (Branch && Zero )
+		*PC += (extended_value << 2);
+     	//Jumo is not complete. Something is not right
+    	if (Jump)
+		*PC = (jsec << 2);
 }
