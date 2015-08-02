@@ -200,12 +200,7 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 1.  Assign the sign-extended value of offset to extended_value. */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
-	if (offset >= 0x8000)
-        	// If offset is negative then it must be extended with 1's
-        	*extended_value = offset | 0xFFFF0000;
-    	else
-        	// If offset is positive
-        	*extended_value = offset;
+	*extended_value = offset >> 15 == 0 ? offset : (offset | 0xFFFF0000);
 }
 
 /* ALU operations */
