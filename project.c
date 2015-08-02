@@ -84,14 +84,13 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 2.  Read line 41 to 47 of spimcore.c for more information. */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
-	instruction = 
-	*op = 
-	*r1 = 
-	*r2 = 
-	*r3 = 
-	*funct = 
-	*offset =
-	*jsec =
+	*op = instruction >> 26; // instruction [31-26]
+        *r1 = instruction >> 21 & 0x0000001F; // instruction [25-21]
+        *r2 = instruction >> 16 & 0x0000001F; // instruction [20-16]
+        *r3 = instruction >> 11 & 0x0000001F; // instruction [15-11]
+        *funct = instruction & 0x0000003F; // instruction [5-0]
+        *offset = instruction & 0x0000FFFF; // instruction [15-0]
+        *jsec =	instruction & 0x03FFFFFF; // instruction [25-0]
 
 }
 
