@@ -1,3 +1,13 @@
+/*
+Charles Cuba
+Parker Hudson
+Duc Nguyen
+CDA3103-15Summer C001
+Group 3 Final Project
+August 7, 2015
+*/
+
+
 #include "spimcore.h"
 
 
