@@ -66,7 +66,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
 	// If not word aligned, halt
-	if (PC%4 != 0 || PC > 0x10000)
+	if (((PC % 4) != 0) || (PC >> 2) > 0x10000)
 	{
 		return 1;
         }
@@ -264,7 +264,6 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
                                 
                                 	default:
                                 	return 1;
-                                	break;
 				
 			}
 	}
@@ -341,8 +340,11 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
 	*PC += 4;
      
     	if (Branch && Zero )
+    		// PC + offset 
 		*PC += (extended_value << 2);
-     	//Jumo is not complete. Something is not right
+		
     	if (Jump)
-		*PC = (jsec << 2);
+    	
+    	// PC(31 - 28), jsec shifted left 2
+    	*PC = (*PC & 0xF0000000) | (jsec << 2);
 }
