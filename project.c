@@ -25,6 +25,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
                         *ALUresult = 1;
                     else
                         *ALUresult = 0;
+                        *Zero = 1;
                     break;
                     
                 case 3: 
@@ -32,6 +33,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
                         *ALUresult = 1;
                     else
                         *ALUresult = 0;
+                        *Zero = 1;
                     break;
                     
                 case 4:
@@ -48,14 +50,10 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
                     
                 case 7: 
                     *ALUresult = !A; // not A
+                    break;
+                    
+                    default: *Zero = 0;
                     }
-            
-            // Assign Zero to 1 if the result is zero
-            if (*ALUresult == 0)
-                *Zero = 1;
-            else
-                *Zero = 0;
-
 }
 
 /* instruction fetch */
@@ -283,8 +281,10 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 4.  Return 1 if a halt condition occurs; otherwise, return 0.  */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
+	unsigned MemZero = 0x00000000;
+	
 	// If MemRead or MemWrite is asserted and word not aligned or out of bounds, halt
-	if ((MemRead | MemWrite) && (ALUresult % 4 != 0 | (ALUresult >> 2) > 0xFFFF))  
+	if ((MemRead | MemWrite) && (ALUresult % 4 != 0 | (ALUresult >> 2) > 0xFFFF | (ALUresult >> 2) < MemZero))  
 	{
 		// Return 1 if a halt condition occurs
 		return 1;
