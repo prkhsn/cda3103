@@ -146,6 +146,8 @@ int instruction_decode(unsigned op,struct_controls *controls)
         	case 4: // beq
                 	controls->Branch = 1; 
                 	controls->ALUOp = 1; // subtraction
+                	controls->RegDst = 2; // don't care
+                	controls->MemtoReg = 2; // don't care
                 	break;
                 
         	case 15: // lui
